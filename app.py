@@ -10,15 +10,14 @@ def index():
 def calculate():
     expression = request.json.get("expression", "")
     try:
-        # Bezpieczne eval - tylko cyfry i podstawowe operatory
         allowed_chars = "0123456789+-*/.() "
         if any(c not in allowed_chars for c in expression):
-            return jsonify({"result": "Błąd: niedozwolone znaki"})
+            return jsonify({"result": "Błąd"})
         result = eval(expression)
     except ZeroDivisionError:
         result = "Błąd: dzielenie przez zero"
     except Exception:
-        result = "Błąd: niepoprawne wyrażenie"
+        result = "Błąd"
     return jsonify({"result": str(result)})
 
 if __name__ == "__main__":

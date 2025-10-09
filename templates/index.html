@@ -1,63 +1,70 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Kalkulator AJAX</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f3f3f3;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .calc {
-            background: #fff;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            width: 220px;
-            text-align: center;
-        }
-        input[type="text"] {
-            width: 90%;
-            padding: 10px;
-            font-size: 18px;
-            text-align: right;
-            margin-bottom: 10px;
-        }
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 50px);
-            gap: 5px;
-            justify-content: center;
-        }
-        button {
-            width: 50px;
-            height: 50px;
-            font-size: 18px;
-            border: none;
-            border-radius: 5px;
-            background: #0078D7;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #005a9e;
-        }
-        #result {
-            font-size: 20px;
-            margin-top: 10px;
-            min-height: 24px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Kalkulator</title>
+<style>
+    body {
+    font-family: Arial;
+    background:#f3f3f3;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    }
+
+    .calc {
+    background:#fff;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 10px rgba(0,0,0,0.2);
+    width:220px;
+    text-align:center;
+    }
+
+    input {
+    width:90%;
+    padding:10px;
+    font-size:18px;
+    text-align:right;
+    margin-bottom:10px;
+    }
+
+    .buttons {
+    display:grid;
+    grid-template-columns:repeat(4,50px);
+    gap:5px;
+    justify-content:center;
+    }
+
+    button {
+    width:50px;
+    height:50px;
+    font-size:18px;
+    border:none;
+    border-radius:5px;
+    background:#0078D7;
+    color:white;
+    cursor:pointer;
+    }
+
+    button:hover {
+    background:#005a9e;
+    }
+
+    .clear-btn {
+    background:#d9534f;
+    grid-column: span 4;
+    }
+    .clear-btn:hover {
+    background:#c9302c;
+    }
+</style>
 </head>
 <body>
 <div class="calc">
     <input type="text" id="expression" placeholder="Wpisz działanie">
     <div class="buttons">
-        <!-- cyfry -->
         <button onclick="insert('7')">7</button>
         <button onclick="insert('8')">8</button>
         <button onclick="insert('9')">9</button>
@@ -74,42 +81,48 @@
         <button onclick="insert('.')">.</button>
         <button onclick="calculate()">=</button>
         <button onclick="insert('/')">/</button>
-        <button onclick="clearInput()" style="grid-column: span 4; background:#d9534f">C</button>
+        <button class="clear-btn" onclick="clearInput()">C</button>
     </div>
-    <div id="result"></div>
 </div>
 
 <script>
+const exprField = document.getElementById("expression");
+
+exprField.addEventListener("input", () => {
+    if (exprField.dataset.lastResult) {
+        exprField.dataset.lastResult = "";
+    }
+});
+
 function insert(char) {
-    const expr = document.getElementById("expression");
-    expr.value += char;
+    if (exprField.dataset.lastResult) {
+        exprField.value = "";
+        exprField.dataset.lastResult = "";
+    }
+    exprField.value += char;
 }
 
 function calculate() {
-    const expr = document.getElementById("expression").value;
     fetch("/calculate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ expression: expr })
+        body: JSON.stringify({ expression: exprField.value })
     })
     .then(res => res.json())
     .then(data => {
-        document.getElementById("result").innerText = data.result;
-        document.getElementById("expression").value = "";
+        exprField.value = data.result;
+        exprField.dataset.lastResult = "true";
     })
-    .catch(() => {
-        document.getElementById("result").innerText = "Błąd";
-    });
+    .catch(() => exprField.value = "Błąd");
 }
 
 function clearInput() {
-    document.getElementById("expression").value = "";
-    document.getElementById("result").innerText = "";
+    exprField.value = "";
+    exprField.dataset.lastResult = "";
 }
 
-// Enter działa jak "="
-document.getElementById("expression").addEventListener("keypress", function(e) {
-    if(e.key === "Enter") {
+exprField.addEventListener("keypress", function(e){
+    if(e.key === "Enter"){
         calculate();
         e.preventDefault();
     }

@@ -10,7 +10,7 @@ def index():
 def calculate():
     expression = request.json.get("expression", "")
     try:
-        # Bezpieczne eval - tylko podstawowe operacje
+        # Bezpieczne eval - tylko cyfry i podstawowe operatory
         allowed_chars = "0123456789+-*/.() "
         if any(c not in allowed_chars for c in expression):
             return jsonify({"result": "Błąd: niedozwolone znaki"})

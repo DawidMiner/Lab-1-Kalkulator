@@ -17,7 +17,7 @@
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            width: 260px;
+            width: 220px;
             text-align: center;
         }
         input[type="text"] {
@@ -27,11 +27,16 @@
             text-align: right;
             margin-bottom: 10px;
         }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 50px);
+            gap: 5px;
+            justify-content: center;
+        }
         button {
-            width: 60px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             font-size: 18px;
-            margin: 5px;
             border: none;
             border-radius: 5px;
             background: #0078D7;
@@ -49,45 +54,66 @@
     </style>
 </head>
 <body>
-    <div class="calc">
-        <input type="text" id="expression" placeholder="Wpisz działanie np. 12+7">
-        <div>
-            <button onclick="calculate()">=</button>
-            <button onclick="clearInput()">C</button>
-        </div>
-        <div id="result"></div>
+<div class="calc">
+    <input type="text" id="expression" placeholder="Wpisz działanie">
+    <div class="buttons">
+        <!-- cyfry -->
+        <button onclick="insert('7')">7</button>
+        <button onclick="insert('8')">8</button>
+        <button onclick="insert('9')">9</button>
+        <button onclick="insert('+')">+</button>
+        <button onclick="insert('4')">4</button>
+        <button onclick="insert('5')">5</button>
+        <button onclick="insert('6')">6</button>
+        <button onclick="insert('-')">-</button>
+        <button onclick="insert('1')">1</button>
+        <button onclick="insert('2')">2</button>
+        <button onclick="insert('3')">3</button>
+        <button onclick="insert('*')">*</button>
+        <button onclick="insert('0')">0</button>
+        <button onclick="insert('.')">.</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="insert('/')">/</button>
+        <button onclick="clearInput()" style="grid-column: span 4; background:#d9534f">C</button>
     </div>
+    <div id="result"></div>
+</div>
 
-    <script>
-        function calculate() {
-            const expr = document.getElementById("expression").value;
-            fetch("/calculate", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ expression: expr })
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("result").innerText = data.result;
-                document.getElementById("expression").value = "";
-            })
-            .catch(err => {
-                document.getElementById("result").innerText = "Błąd";
-            });
-        }
+<script>
+function insert(char) {
+    const expr = document.getElementById("expression");
+    expr.value += char;
+}
 
-        function clearInput() {
-            document.getElementById("expression").value = "";
-            document.getElementById("result").innerText = "";
-        }
+function calculate() {
+    const expr = document.getElementById("expression").value;
+    fetch("/calculate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ expression: expr })
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("result").innerText = data.result;
+        document.getElementById("expression").value = "";
+    })
+    .catch(() => {
+        document.getElementById("result").innerText = "Błąd";
+    });
+}
 
-        // Enter też działa
-        document.getElementById("expression").addEventListener("keypress", function(e) {
-            if (e.key === "Enter") {
-                calculate();
-                e.preventDefault();
-            }
-        });
-    </script>
+function clearInput() {
+    document.getElementById("expression").value = "";
+    document.getElementById("result").innerText = "";
+}
+
+// Enter działa jak "="
+document.getElementById("expression").addEventListener("keypress", function(e) {
+    if(e.key === "Enter") {
+        calculate();
+        e.preventDefault();
+    }
+});
+</script>
 </body>
 </html>

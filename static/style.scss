@@ -1,0 +1,14 @@
+$bg: #f3f3f3;
+$button-color: #0078D7;
+$button-hover: #005a9e;
+
+body {
+  background: $bg;
+  font-family: Arial;
+}
+button {
+  background-color: $button-color;
+  &:hover {
+    background-color: $button-hover;
+  }
+}

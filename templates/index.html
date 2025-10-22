@@ -1,132 +1,39 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-<meta charset="UTF-8">
-<title>Kalkulator</title>
-<style>
-    body {
-    font-family: Arial;
-    background:#f3f3f3;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    }
-
-    .calc {
-    background:#fff;
-    padding:20px;
-    border-radius:15px;
-    box-shadow:0 0 10px rgba(0,0,0,0.2);
-    width:220px;
-    text-align:center;
-    }
-
-    input {
-    width:90%;
-    padding:10px;
-    font-size:18px;
-    text-align:right;
-    margin-bottom:10px;
-    }
-
-    .buttons {
-    display:grid;
-    grid-template-columns:repeat(4,50px);
-    gap:5px;
-    justify-content:center;
-    }
-
-    button {
-    width:50px;
-    height:50px;
-    font-size:18px;
-    border:none;
-    border-radius:5px;
-    background:#0078D7;
-    color:white;
-    cursor:pointer;
-    }
-
-    button:hover {
-    background:#005a9e;
-    }
-
-    .clear-btn {
-    background:#d9534f;
-    grid-column: span 4;
-    }
-    .clear-btn:hover {
-    background:#c9302c;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Flask</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<div class="calc">
-    <input type="text" id="expression" placeholder="Wpisz działanie">
-    <div class="buttons">
-        <button onclick="insert('7')">7</button>
-        <button onclick="insert('8')">8</button>
-        <button onclick="insert('9')">9</button>
-        <button onclick="insert('+')">+</button>
-        <button onclick="insert('4')">4</button>
-        <button onclick="insert('5')">5</button>
-        <button onclick="insert('6')">6</button>
-        <button onclick="insert('-')">-</button>
-        <button onclick="insert('1')">1</button>
-        <button onclick="insert('2')">2</button>
-        <button onclick="insert('3')">3</button>
-        <button onclick="insert('*')">*</button>
-        <button onclick="insert('0')">0</button>
-        <button onclick="insert('.')">.</button>
-        <button onclick="calculate()">=</button>
-        <button onclick="insert('/')">/</button>
-        <button class="clear-btn" onclick="clearInput()">C</button>
+    <div class="calculator">
+        <input type="text" id="display" placeholder="Wpisz działanie..." autofocus>
+        <div class="buttons">
+            <!-- cyfry -->
+            <button onclick="appendNumber('7')">7</button>
+            <button onclick="appendNumber('8')">8</button>
+            <button onclick="appendNumber('9')">9</button>
+            <button onclick="appendNumber('4')">4</button>
+            <button onclick="appendNumber('5')">5</button>
+            <button onclick="appendNumber('6')">6</button>
+            <button onclick="appendNumber('1')">1</button>
+            <button onclick="appendNumber('2')">2</button>
+            <button onclick="appendNumber('3')">3</button>
+            <button onclick="appendNumber('0')">0</button>
+
+            <!-- działania -->
+            <button onclick="appendOperator('+')">+</button>
+            <button onclick="appendOperator('-')">-</button>
+            <button onclick="appendOperator('*')">*</button>
+            <button onclick="appendOperator('/')">/</button>
+
+            <!-- dodatkowe -->
+            <button onclick="calculate()">=</button>
+            <button onclick="clearDisplay()">C</button>
+        </div>
     </div>
-</div>
 
-<script>
-const exprField = document.getElementById("expression");
-
-exprField.addEventListener("input", () => {
-    if (exprField.dataset.lastResult) {
-        exprField.dataset.lastResult = "";
-    }
-});
-
-function insert(char) {
-    if (exprField.dataset.lastResult) {
-        exprField.value = "";
-        exprField.dataset.lastResult = "";
-    }
-    exprField.value += char;
-}
-
-function calculate() {
-    fetch("/calculate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ expression: exprField.value })
-    })
-    .then(res => res.json())
-    .then(data => {
-        exprField.value = data.result;
-        exprField.dataset.lastResult = "true";
-    })
-    .catch(() => exprField.value = "Błąd");
-}
-
-function clearInput() {
-    exprField.value = "";
-    exprField.dataset.lastResult = "";
-}
-
-exprField.addEventListener("keypress", function(e){
-    if(e.key === "Enter"){
-        calculate();
-        e.preventDefault();
-    }
-});
-</script>
+    <script src="{{ url_for('static', filename='script.min.js') }}"></script>
 </body>
 </html>

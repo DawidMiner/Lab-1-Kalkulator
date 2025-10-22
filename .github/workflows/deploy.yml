@@ -41,6 +41,12 @@ jobs:
             .
             !antenv/
 
+      - name: Compile SCSS → CSS
+        run: sass static/style.scss static/style.css
+
+      - name: Minify JavaScript
+        run: uglifyjs static/script.js -o static/script.min.js
+
       # 🚫 Opting Out of Oryx Build
       # If you prefer to disable the Oryx build process during deployment, follow these steps:
       # 1. Remove the SCM_DO_BUILD_DURING_DEPLOYMENT app setting from your Azure App Service Environment variables.

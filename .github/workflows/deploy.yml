@@ -41,6 +41,14 @@ jobs:
             .
             !antenv/
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install build tools
+        run: npm install -g sass uglify-js
+
       - name: Compile SCSS → CSS
         run: sass static/style.scss static/style.css
 

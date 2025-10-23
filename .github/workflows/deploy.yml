@@ -87,3 +87,12 @@ jobs:
         with:
           app-name: 'Lab-1-Kalkulator'
           slot-name: 'Production'
+
+      - name: Upload artifact for deployment jobs
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-app
+          path: |
+            .
+            !node_modules/
+

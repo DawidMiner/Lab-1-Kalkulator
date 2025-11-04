@@ -13,6 +13,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  margin: 0;
 }
 
 .calculator {
@@ -21,19 +22,24 @@ body {
   border-radius: $border-radius;
   box-shadow: $shadow;
   width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .display {
+  width: 100%;
   margin-bottom: 15px;
 
   input {
     width: 100%;
-    font-size: 28px;
+    font-size: 30px;
     text-align: right;
-    padding: 10px;
+    padding: 15px;
     border-radius: 10px;
     border: 1px solid #ccc;
     background: #f9f9f9;
+    box-sizing: border-box;
   }
 }
 
@@ -41,16 +47,17 @@ body {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
+  width: 100%;
 
   button {
-    padding: 15px;
+    padding: 18px;
     font-size: 18px;
     border: none;
     border-radius: 8px;
     background-color: $button-color;
     color: $button-text;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, transform 0.1s;
 
     &:hover {
       background-color: $button-hover;

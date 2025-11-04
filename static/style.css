@@ -1,0 +1,13 @@
+body {
+  background: #f3f3f3;
+  font-family: Arial;
+}
+
+button {
+  background-color: #0078D7;
+}
+button:hover {
+  background-color: #005a9e;
+}
+
+/*# sourceMappingURL=style.css.map */

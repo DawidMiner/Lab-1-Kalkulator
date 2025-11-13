@@ -1,5 +1,6 @@
 import pytest
-from ..app import safe_eval, app
+from app import safe_eval, app
+
 
 def test_safe_eval_simple():
     assert safe_eval("1+2") == 3

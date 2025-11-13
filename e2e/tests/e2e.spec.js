@@ -1,18 +1,27 @@
 import { test, expect } from '@playwright/test';
 
+// 🔁 Pozwala Playwrightowi spróbować ponownie, jeśli pierwszy test się nie uda (np. backend jeszcze się uruchamia)
+test.describe.configure({ retries: 2 });
+
 test('basic calculation flow', async ({ page }) => {
-  // Wejdź na stronę frontendu
+  // 🔍 Logowanie wiadomości z konsoli przeglądarki (pomoże w debugowaniu błędów z frontendu/backendu)
+  page.on('console', msg => console.log('BROWSER LOG:', msg.text()));
+
+  // 🌐 Wejdź na stronę frontendu
   await page.goto(process.env.BASE_URL);
 
-  // Kliknięcia po tekście, bo przyciski nie mają ID
+  // 🧮 Symulacja kliknięć użytkownika
   await page.click('text=1');
   await page.click('text=+');
   await page.click('text=2');
-  await page.click('text=='); // przycisk "="
+  await page.click('text==');
 
-  // Pobierz wartość z pola #display
+  // ⏳ Czekamy chwilę, aż backend odpowie (Flask może potrzebować sekundy)
+  await page.waitForTimeout(1000);
+
+  // 🔢 Pobieramy wartość z pola wyświetlacza
   const value = await page.$eval('#display', el => el.value.trim());
 
-  // Oczekujemy wyniku "3"
+  // ✅ Sprawdzamy, czy wynik to 3
   expect(value).toBe('3');
 });

@@ -50,80 +50,80 @@ jobs:
           cd frontend
           npm test --silent
 
-#  e2e:
-#    runs-on: ubuntu-latest
-#    needs: frontend-tests
-#    steps:
-#      - uses: actions/checkout@v4
-#
-#      - name: Set up Python
-#        uses: actions/setup-python@v5
-#        with:
-#          python-version: '3.11'
-#
-#      - name: Set up Node.js
-#        uses: actions/setup-node@v4
-#        with:
-#          node-version: '18'
-#
-#      - name: Install deps (backend, frontend & e2e)
-#        run: |
-#          cd backend
-#          python -m pip install --upgrade pip
-#          pip install -r requirements.txt
-#          cd ../frontend
-#          npm ci
-#          cd ../e2e
-#          npm ci
-#          npx playwright install --with-deps
-#        shell: bash
-#
-#      - name: Start backend (Flask) in background
-#        run: |
-#          cd backend
-#          export FLASK_APP=app.py
-#          export FLASK_ENV=development
-#          nohup flask run --host=0.0.0.0 --port=5000 >/tmp/flask.log 2>&1 &
-#        shell: bash
-#
-#      - name: Serve frontend in background
-#        run: |
-#          cd frontend
-#          npx http-server -p 3000 ./ >/tmp/http.log 2>&1 &
-#        shell: bash
-#
-#      - name: Wait for backend and frontend to be ready
-#        run: |
-#          echo "Waiting for backend..."
-#          for i in {1..30}; do
-#            if curl -s http://localhost:5000/health | grep -q 'ok'; then
-#              echo "Backend ready"
-#              break
-#            else
-#              echo "Waiting for backend to start..."
-#              sleep 2
-#            fi
-#          done
-#
-#          echo "Waiting for frontend..."
-#          for i in {1..30}; do
-#            if curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 | grep -q "200"; then
-#              echo "Frontend ready"
-#              break
-#            else
-#              echo "Waiting for frontend to start..."
-#              sleep 2
-#            fi
-#          done
-#        shell: bash
-#
-#      - name: Run Playwright E2E tests
-#        run: |
-#          cd e2e
-#          npx playwright test --config=playwright.config.js
-#        env:
-#          BASE_URL: http://localhost:3000
-#          BACKEND_URL: http://localhost:5000
+  e2e:
+    runs-on: ubuntu-latest
+    needs: frontend-tests
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install deps (backend, frontend & e2e)
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          cd ../frontend
+          npm ci
+          cd ../e2e
+          npm ci
+          npx playwright install --with-deps
+        shell: bash
+
+      - name: Start backend (Flask) in background
+        run: |
+          cd backend
+          export FLASK_APP=app.py
+          export FLASK_ENV=development
+          nohup flask run --host=0.0.0.0 --port=5000 >/tmp/flask.log 2>&1 &
+        shell: bash
+
+      - name: Serve frontend in background
+        run: |
+          cd frontend
+          npx http-server -p 3000 ./ >/tmp/http.log 2>&1 &
+        shell: bash
+
+      - name: Wait for backend and frontend to be ready
+        run: |
+          echo "Waiting for backend..."
+          for i in {1..30}; do
+            if curl -s http://localhost:5000/health | grep -q 'ok'; then
+              echo "Backend ready"
+              break
+            else
+              echo "Waiting for backend to start..."
+              sleep 2
+            fi
+          done
+
+          echo "Waiting for frontend..."
+          for i in {1..30}; do
+            if curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 | grep -q "200"; then
+              echo "Frontend ready"
+              break
+            else
+              echo "Waiting for frontend to start..."
+              sleep 2
+            fi
+          done
+        shell: bash
+
+      - name: Run Playwright E2E tests
+        run: |
+          cd e2e
+          npx playwright test --config=playwright.config.js
+        env:
+          BASE_URL: http://localhost:3000
+          BACKEND_URL: http://localhost:5000
 
   deploy:
     runs-on: ubuntu-latest

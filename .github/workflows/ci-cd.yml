@@ -76,6 +76,7 @@ jobs:
           npm ci
           cd ../e2e
           npm ci
+          npx playwright install --with-deps   # 🟢 ← DODAJ TEN WIERSZ
         shell: bash
 
       - name: Start backend (Flask) in background
@@ -100,6 +101,7 @@ jobs:
           npx playwright test --config=playwright.config.js
         env:
           BASE_URL: http://localhost:3000
+
 
   deploy:
     runs-on: ubuntu-latest

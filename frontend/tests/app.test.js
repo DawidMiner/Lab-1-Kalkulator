@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { append, clearDisplay } from '../src/app';
+import { append, clearDisplay } from '../app';
 
 test('append adds characters to display', () => {
   document.body.innerHTML = '<input id="display" value=""/>';

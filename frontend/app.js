@@ -1,7 +1,6 @@
 const API = (process.env.BACKEND_URL) ? process.env.BACKEND_URL : "http://localhost:5000";
 
-
-export function append(ch) {
+function append(ch) {
   const d = document.getElementById("display");
   if (d.dataset.lastResult) {
     d.value = "";
@@ -10,13 +9,13 @@ export function append(ch) {
   d.value += ch;
 }
 
-export function clearDisplay() {
+function clearDisplay() {
   const d = document.getElementById("display");
   d.value = "";
   delete d.dataset.lastResult;
 }
 
-export async function calc() {
+async function calc() {
   const d = document.getElementById("display");
   const expr = d.value;
   try {
@@ -36,6 +35,11 @@ export async function calc() {
     d.value = "Błąd sieci";
   }
 }
+
+// przypisujemy funkcje do globalnego obiektu window, żeby były widoczne dla onclick w HTML
+window.append = append;
+window.clearDisplay = clearDisplay;
+window.calc = calc;
 
 // attach event for Enter key
 document.addEventListener("DOMContentLoaded", () => {

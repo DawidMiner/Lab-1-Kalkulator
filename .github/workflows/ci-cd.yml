@@ -91,9 +91,10 @@ jobs:
       - name: Serve frontend in background
         run: |
           cd frontend
-          npx http-server -p 3000 >/tmp/http.log 2>&1 &
+          npx http-server -p 3000 ./ >/tmp/http.log 2>&1 &
           sleep 5
         shell: bash
+
 
       - name: Run Playwright E2E tests
         run: |

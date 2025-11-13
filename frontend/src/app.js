@@ -1,4 +1,7 @@
-const API = (process.env.BACKEND_URL) ? process.env.BACKEND_URL : "http://localhost:5000";
+const API = window.location.origin.includes("localhost:3000")
+  ? "http://localhost:5000"
+  : window.location.origin;
+
 
 export function append(ch) {
   const d = document.getElementById("display");

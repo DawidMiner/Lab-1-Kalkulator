@@ -1,7 +1,4 @@
-const API = window.location.origin.includes("localhost:3000")
-  ? "http://localhost:5000"
-  : window.location.origin;
-
+const API = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
 export function append(ch) {
   const d = document.getElementById("display");

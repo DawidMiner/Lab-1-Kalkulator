@@ -1,13 +1,18 @@
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 
 test('basic calculation flow', async ({ page }) => {
-  // open your frontend page (if frontend is served separate adjust path)
-  await page.goto('/');
-  await page.click('button:has-text("1")');
-  await page.click('button:has-text("+")');
-  await page.click('button:has-text("2")');
-  await page.click('button:has-text("=")');
-  // check display value
-  const value = await page.$eval('#display', el => el.value);
+  // Wejdź na stronę frontendu
+  await page.goto(process.env.BASE_URL);
+
+  // Kliknięcia po tekście, bo przyciski nie mają ID
+  await page.click('text=1');
+  await page.click('text=+');
+  await page.click('text=2');
+  await page.click('text=='); // przycisk "="
+
+  // Pobierz wartość z pola #display
+  const value = await page.$eval('#display', el => el.value.trim());
+
+  // Oczekujemy wyniku "3"
   expect(value).toBe('3');
 });

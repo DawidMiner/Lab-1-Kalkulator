@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify, abort
 import re
+from flask_cors import CORS  # <-- dodaj import
 
 app = Flask(__name__)
+CORS(app)  # <-- włącz CORS globalnie
 
 ALLOWED = re.compile(r'^[0-9+\-*/().\s]+$')
 

@@ -45,7 +45,7 @@ body {
   font-size: 18px;
   border: none;
   border-radius: 8px;
-  background-color: #0078D7;
+  background-color: green;
   color: #fff;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.1s;

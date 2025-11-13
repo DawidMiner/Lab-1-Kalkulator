@@ -1,6 +1,6 @@
 const API = (process.env.BACKEND_URL) ? process.env.BACKEND_URL : "http://localhost:5000";
 
-function append(ch) {
+export function append(ch) {
   const d = document.getElementById("display");
   if (d.dataset.lastResult) {
     d.value = "";
@@ -9,13 +9,13 @@ function append(ch) {
   d.value += ch;
 }
 
-function clearDisplay() {
+export function clearDisplay() {
   const d = document.getElementById("display");
   d.value = "";
   delete d.dataset.lastResult;
 }
 
-async function calc() {
+export async function calc() {
   const d = document.getElementById("display");
   const expr = d.value;
   try {
@@ -36,12 +36,12 @@ async function calc() {
   }
 }
 
-// przypisujemy funkcje do globalnego obiektu window, żeby były widoczne dla onclick w HTML
+// Przypisz funkcje globalnie, żeby były widoczne dla onclick w HTML
 window.append = append;
 window.clearDisplay = clearDisplay;
 window.calc = calc;
 
-// attach event for Enter key
+// Event dla klawisza Enter
 document.addEventListener("DOMContentLoaded", () => {
   const d = document.getElementById("display");
   d.addEventListener("keypress", (e) => {

@@ -1,22 +1,28 @@
-function appendNumber(num) {
-    const display = document.getElementById('display');
-    display.value += num;
+function getDisplay() {
+  return document.getElementById("display");
 }
 
-function appendOperator(op) {
-    const display = document.getElementById('display');
-    display.value += op;
-}
+window.append = function (char) {
+  getDisplay().value += char;
+};
 
-function calculate() {
-    const display = document.getElementById('display');
-    try {
-        display.value = eval(display.value);
-    } catch (e) {
-        display.value = 'Błąd';
-    }
-}
+window.clearDisplay = function () {
+  getDisplay().value = "";
+};
 
-function clearDisplay() {
-    document.getElementById('display').value = '';
-}
+window.calc = async function () {
+  const expr = getDisplay().value;
+
+  try {
+    const resp = await fetch("/api/calc", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ expression: expr })
+    });
+
+    const json = await resp.json();
+    getDisplay().value = json.result;
+  } catch {
+    getDisplay().value = "Błąd";
+  }
+};

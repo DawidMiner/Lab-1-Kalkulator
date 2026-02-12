@@ -1,13 +1,13 @@
-import { appendValue, clearValue } from '../src/calculator';
+const { appendValue, clearValue } = require("../src/calculator");
 
-test('appendValue adds characters', () => {
+test("appendValue adds characters", () => {
   let value = "";
-  value = appendValue(value, '1');
-  value = appendValue(value, '+');
-  value = appendValue(value, '2');
-  expect(value).toBe('1+2');
+  value = appendValue(value, "1");
+  value = appendValue(value, "+");
+  value = appendValue(value, "2");
+  expect(value).toBe("1+2");
 });
 
-test('clearValue empties string', () => {
-  expect(clearValue()).toBe('');
+test("clearValue clears value", () => {
+  expect(clearValue()).toBe("");
 });

@@ -1,8 +1,16 @@
-from flask import Flask, request, jsonify, abort
+import os
 import re
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 
-app = Flask(__name__)
+# Dynamiczne ustalanie ścieżki do folderu frontend (poziom wyżej niż backend)
+#
+base_dir = os.path.dirname(os.path.abspath(__file__))
+frontend_dir = os.path.abspath(os.path.join(base_dir, '..', 'frontend'))
+
+app = Flask(__name__,
+            static_folder=os.path.join(frontend_dir, 'static'),
+            static_url_path='/static')
 CORS(app)
 
 ALLOWED = re.compile(r'^[0-9+\-*/().\s]+$')
@@ -13,11 +21,20 @@ def safe_eval(expr: str):
         raise ValueError("Empty expression")
     if not ALLOWED.match(expr):
         raise ValueError("Invalid characters")
-    # eval in restricted namespace
+    # eval w ograniczonym namespace dla bezpieczeństwa
     return eval(expr, {"__builtins__": None}, {})
 
-@app.route("/api/calc/", methods=["POST"])
+# --- TRASY DLA FRONTENDU ---
+
+@app.route("/")
+def index():
+    """Serwuje główny plik kalkulatora."""
+    return send_from_directory(frontend_dir, 'index.html')
+
+# --- TRASY API ---
+
 @app.route("/api/calc", methods=["POST"])
+@app.route("/api/calc/", methods=["POST"])
 def calculate():
     data = request.get_json(force=True)
     expr = data.get("expression", "")
@@ -36,4 +53,5 @@ def health():
     return jsonify({"status": "ok"})
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    # Ustawienie portu 5000 dla lokalnego testowania
+    app.run(host="0.0.0.0", port=5000)

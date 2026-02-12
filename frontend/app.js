@@ -1,28 +1,36 @@
 import { appendValue, clearValue } from './src/calculator.js';
 
-const API = "http://localhost:5000";
+const API = "http://localhost:5000"; // ❌ żadnego process.env w przeglądarce
 
-const display = document.getElementById("display");
+let currentValue = "";
 
-function append(ch) {
-  display.value = appendValue(display.value, ch);
+function render() {
+  document.getElementById("display").value = currentValue;
 }
 
-function clearDisplay() {
-  display.value = clearValue();
-}
+window.append = function (ch) {
+  currentValue = appendValue(currentValue, ch);
+  render();
+};
 
-async function calc() {
-  const expr = display.value;
-  const resp = await fetch(`${API}/api/calc`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ expression: expr })
-  });
-  const json = await resp.json();
-  display.value = json.result ?? json.error;
-}
+window.clearDisplay = function () {
+  currentValue = clearValue();
+  render();
+};
 
-window.append = append;
-window.clearDisplay = clearDisplay;
-window.calc = calc;
+window.calc = async function () {
+  try {
+    const resp = await fetch(`${API}/api/calc`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ expression: currentValue })
+    });
+
+    const json = await resp.json();
+    currentValue = json.result?.toString() || "Błąd";
+    render();
+  } catch {
+    currentValue = "Błąd sieci";
+    render();
+  }
+};

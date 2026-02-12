@@ -16,6 +16,7 @@ def safe_eval(expr: str):
     # eval in restricted namespace
     return eval(expr, {"__builtins__": None}, {})
 
+@app.route("/api/calc/", methods=["POST"])
 @app.route("/api/calc", methods=["POST"])
 def calculate():
     data = request.get_json(force=True)
@@ -33,3 +34,6 @@ def calculate():
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({"status": "ok"})
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)

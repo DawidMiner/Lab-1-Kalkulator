@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Kalkulator (frontend)</title>
   <link rel="stylesheet" href="static/style.css">
-  <script src="static/script.js"></script>
 </head>
 <body>
   <div class="calculator">
-    <input id="display" type="text" placeholder="Wpisz działanie">
+    <input id="display" type="text" placeholder="Wpisz działanie" readonly>
     <div class="buttons">
       <button onclick="append('7')">7</button>
       <button onclick="append('8')">8</button>
@@ -30,6 +29,6 @@
       <button class="clear" onclick="clearDisplay()">C</button>
     </div>
   </div>
-  <script type="module" src="app.js"></script>
+  <script src="static/script.js"></script>
 </body>
 </html>

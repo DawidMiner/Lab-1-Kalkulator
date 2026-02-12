@@ -128,21 +128,28 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: e2e
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main' && success()
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: '18'
+          python-version: '3.11'
 
-      - name: Compile CSS from SCSS
+      - name: Install backend deps
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build frontend assets (if needed)
         run: |
           cd frontend
-          # Używamy npx, aby uniknąć problemów z uprawnieniami instalacji globalnej
-          npx sass static/style.scss static/style.css --no-source-map
-        shell: bash
+          # odkomentuj poniższą linię jeśli masz krok build np. React/Vue itp.
+          # npm run build
+          echo "No frontend build step configured"
 
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3

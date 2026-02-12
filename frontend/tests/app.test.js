@@ -1,4 +1,4 @@
-const { appendValue, clearValue } = require("../src/calculator");
+const { appendValue, clearValue } = require("../src/calculator.js");
 
 test("appendValue adds characters", () => {
   let value = "";

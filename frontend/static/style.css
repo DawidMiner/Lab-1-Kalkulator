@@ -51,7 +51,7 @@ body {
   transition: background-color 0.2s, transform 0.1s;
 }
 .buttons button:hover {
-  background-color: #c41919;
+  background-color: red;
 }
 .buttons button:active {
   transform: scale(0.95);

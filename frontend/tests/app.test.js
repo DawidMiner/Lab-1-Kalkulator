@@ -1,6 +1,3 @@
-/**
- * @jest-environment jsdom
- */
 import { append, clearDisplay } from '../app';
 
 test('append adds characters to display', () => {

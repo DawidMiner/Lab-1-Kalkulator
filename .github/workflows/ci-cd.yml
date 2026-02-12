@@ -137,11 +137,11 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install Sass and Compile CSS
+      - name: Compile CSS from SCSS
         run: |
           cd frontend
-          npm install -g sass
-          sass static/style.scss static/style.css --no-source-map
+          # Używamy npx, aby uniknąć problemów z uprawnieniami instalacji globalnej
+          npx sass static/style.scss static/style.css --no-source-map
         shell: bash
 
       - name: Deploy to Azure Web App

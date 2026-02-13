@@ -30,8 +30,9 @@ body {
 .display {
   width: 100%;
   margin-bottom: 15px;
+}
 
-  input {
+input {
     width: 100%;
     font-size: 30px;
     text-align: right;
@@ -41,7 +42,6 @@ body {
     background: #f9f9f9;
     box-sizing: border-box;
   }
-}
 
 .buttons {
   display: grid;

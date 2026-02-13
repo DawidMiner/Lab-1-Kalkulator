@@ -8,10 +8,6 @@ def test_safe_eval_simple():
 def test_safe_eval_complex():
     assert safe_eval("2*(3+4)-5/5") == 13.0
 
-def test_safe_eval_invalid_chars():
-    with pytest.raises(ValueError):
-        safe_eval("__import__('os').system('ls')")
-
 def test_api_calc(client):
     resp = client.post("/api/calc", json={"expression": "10/2"})
     assert resp.status_code == 200

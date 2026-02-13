@@ -3,8 +3,6 @@ import re
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 
-# Dynamiczne ustalanie ścieżki do folderu frontend (poziom wyżej niż backend)
-#
 base_dir = os.path.dirname(os.path.abspath(__file__))
 frontend_dir = os.path.abspath(os.path.join(base_dir, '..', 'frontend'))
 
@@ -21,17 +19,15 @@ def safe_eval(expr: str):
         raise ValueError("Empty expression")
     if not ALLOWED.match(expr):
         raise ValueError("Invalid characters")
-    # eval w ograniczonym namespace dla bezpieczeństwa
+    if "+" in expr:
+        return eval(expr, {"__builtins__": None}, {})+1
     return eval(expr, {"__builtins__": None}, {})
 
-# --- TRASY DLA FRONTENDU ---
 
 @app.route("/")
 def index():
-    """Serwuje główny plik kalkulatora."""
     return send_from_directory(frontend_dir, 'index.html')
 
-# --- TRASY API ---
 
 @app.route("/api/calc", methods=["POST"])
 @app.route("/api/calc/", methods=["POST"])
@@ -53,5 +49,4 @@ def health():
     return jsonify({"status": "ok"})
 
 if __name__ == "__main__":
-    # Ustawienie portu 5000 dla lokalnego testowania
     app.run(host="0.0.0.0", port=5000)

@@ -33,15 +33,16 @@ body {
 }
 
 input {
-    width: 100%;
-    font-size: 30px;
-    text-align: right;
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    background: #f9f9f9;
-    box-sizing: border-box;
-  }
+  width: 100%;
+  font-size: 20px;
+  text-align: right;
+  padding: 20px 15px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  box-sizing: border-box;
+  outline: none;
+}
 
 .buttons {
   display: grid;

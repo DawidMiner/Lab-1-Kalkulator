@@ -30,12 +30,10 @@ input {
   width: 100%;
   font-size: 20px;
   text-align: right;
-  /* Zwiększony padding góra/dół (20px) sprawia, że pole jest wyższe */
   padding: 20px 15px;
   border-radius: 10px;
   border: 1px solid #ccc;
   background: #f9f9f9;
-  /* Kluczowe: box-sizing zapewnia, że padding nie "rozpycha" inputu poza szerokość kalkulatora */
   box-sizing: border-box;
   outline: none;
 }

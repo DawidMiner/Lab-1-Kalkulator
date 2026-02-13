@@ -152,10 +152,10 @@ jobs:
           # npm run build
           echo "No frontend build step configured"
 
-      - name: Compile CSS from SCSS
+      - name: Install Sass and Compile CSS
         run: |
-          cd frontend
-          npx sass static/style.scss static/style.css --no-source-map
+          npm install -g sass
+          sass frontend/static/style.scss frontend/static/style.css --no-source-map
         shell: bash
 
       - name: Deploy to Azure Web App

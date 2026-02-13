@@ -13,7 +13,7 @@ body {
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  width: 280px; /* Lekko zwiększona szerokość, by przyciski miały więcej miejsca */
+  width: 280px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,7 +21,6 @@ body {
 
 .display {
   width: 100%;
-  /* Zwiększony margines dolny, aby pole nie było "przyklejone" do przycisków */
   margin-bottom: 20px;
   display: flex;
 }
@@ -69,7 +68,7 @@ input {
 
 .clear-btn {
   grid-column: span 4;
-  background-color: #ff4d4d !important; /* Force red to override hover defaults if needed */
+  background-color: #ff4d4d !important;
   margin-top: 5px;
 }
 

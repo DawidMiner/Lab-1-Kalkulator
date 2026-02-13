@@ -89,7 +89,6 @@ jobs:
       - name: Serve frontend in background
         run: |
           cd frontend
-          # Dodajemy flagę --proxy, która przekieruje nieznane żądania (jak /api/calc) do Flaska
           npx http-server -p 3000 --proxy http://localhost:5000 ./ >/tmp/http.log 2>&1 &
         shell: bash
 
@@ -148,14 +147,12 @@ jobs:
       - name: Build frontend assets (if needed)
         run: |
           cd frontend
-          # odkomentuj poniższą linię jeśli masz krok build np. React/Vue itp.
-          # npm run build
           echo "No frontend build step configured"
 
-      - name: Install Sass and Compile CSS
+      - name: Install Sass and Compile CSS (with Minification)
         run: |
           npm install -g sass
-          sass frontend/static/style.scss frontend/static/style.css --no-source-map
+          sass frontend/static/style.scss frontend/static/style.css --style=compressed --no-source-map
         shell: bash
 
       - name: Deploy to Azure Web App

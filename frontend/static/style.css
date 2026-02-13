@@ -49,7 +49,7 @@ input {
   font-size: 18px;
   border: none;
   border-radius: 8px;
-  background-color: #C41919;
+  background-color: yellow;
   color: #fff;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.1s;

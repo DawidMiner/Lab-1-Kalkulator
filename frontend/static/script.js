@@ -13,10 +13,13 @@ window.clearDisplay = function () {
 window.calc = async function () {
   const expr = getDisplay().value;
 
+  // Sprawdzamy, czy jesteśmy w środowisku testowym (port 3000)
+  // Jeśli tak, strzelamy bezpośrednio do Flaska na port 5000
+  const isTest = window.location.port === '3000';
+  const apiUrl = isTest ? "http://127.0.0.1:5000/api/calc" : "/api/calc";
+
   try {
-    // ZMIANA: Usuwamy http://127.0.0.1:5000 i zostawiamy samą ścieżkę
-    // Dzięki temu zapytanie trafi tam, gdzie hostowana jest strona
-    const resp = await fetch("/api/calc", {
+    const resp = await fetch(apiUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ expression: expr })

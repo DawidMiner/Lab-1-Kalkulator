@@ -19,8 +19,6 @@ def safe_eval(expr: str):
         raise ValueError("Empty expression")
     if not ALLOWED.match(expr):
         raise ValueError("Invalid characters")
-    if "+" in expr:
-        return eval(expr, {"__builtins__": None}, {})+1
     return eval(expr, {"__builtins__": None}, {})
 
 

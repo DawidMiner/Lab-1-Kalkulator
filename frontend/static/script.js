@@ -14,15 +14,17 @@ window.calc = async function () {
   const expr = getDisplay().value;
 
   try {
-    // Zmieniamy ścieżkę na pełny URL do backendu (port 5000 w CI)
-    const resp = await fetch("http://127.0.0.1:5000/api/calc", {
+    // ZMIANA: Usuwamy http://127.0.0.1:5000 i zostawiamy samą ścieżkę
+    // Dzięki temu zapytanie trafi tam, gdzie hostowana jest strona
+    const resp = await fetch("/api/calc", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ expression: expr })
     });
 
     if (!resp.ok) {
-        throw new Error("Błąd serwera");
+        const errorData = await resp.json();
+        throw new Error(errorData.error || "Błąd serwera");
     }
 
     const json = await resp.json();

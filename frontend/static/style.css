@@ -28,7 +28,7 @@ body {
 
 input {
   width: 100%;
-  font-size: 320px;
+  font-size: 32px;
   text-align: right;
   /* Zwiększony padding góra/dół (20px) sprawia, że pole jest wyższe */
   padding: 20px 15px;

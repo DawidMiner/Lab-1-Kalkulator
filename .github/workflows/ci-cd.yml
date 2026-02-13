@@ -89,7 +89,8 @@ jobs:
       - name: Serve frontend in background
         run: |
           cd frontend
-          npx http-server -p 3000 ./ >/tmp/http.log 2>&1 &
+          # Dodajemy flagę --proxy, która przekieruje nieznane żądania (jak /api/calc) do Flaska
+          npx http-server -p 3000 --proxy http://localhost:5000 ./ >/tmp/http.log 2>&1 &
         shell: bash
 
       - name: Wait for backend and frontend to be ready
